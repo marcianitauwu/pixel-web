@@ -20,5 +20,17 @@ function requireAdmin(req, res, next) {
   return next();
 }
 
+// Pantallas de jugar: solo para jugadores. El admin va a su panel.
+function requireJugador(req, res, next) {
+  const usuario = req.session && req.session.usuario;
+  if (!usuario) return requireLogin(req, res, next);
+  if (usuario.rol === 'admin') {
+    if (req.originalUrl.startsWith('/api/')) {
+      return res.status(403).json({ error: 'El administrador no registra partidas.' });
+    }
+    return res.redirect('/admin/juegos');
+  }
+  return next();
+}
 
-module.exports = { requireLogin, requireAdmin };
+module.exports = { requireLogin, requireAdmin, requireJugador };

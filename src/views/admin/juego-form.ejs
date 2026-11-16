@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+<div class="encabezado-pagina">
+  <h1><%= titulo %></h1>
+  <a href="/admin/juegos">Volver a la lista</a>
+</div>
+<section class="bloque panel-form">
+  <form method="post" action="<%= accion %>" class="formulario" data-validar>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label>Título
+      <input name="titulo" required minlength="3" maxlength="80" value="<%= valores.titulo || '' %>">
+      <% if (errores.titulo) { %><span class="error"><%= errores.titulo %></span><% } %>
+    </label>
+
+    <label>Descripción
+      <textarea name="descripcion" required minlength="10" maxlength="500"><%= valores.descripcion || '' %></textarea>
+      <% if (errores.descripcion) { %><span class="error"><%= errores.descripcion %></span><% } %>
+    </label>
+
+    <label>Categoría
+      <select name="categoria" required>
+        <option value="">Elige una categoría</option>
+        <% categorias.forEach(c => { %>
+          <option value="<%= c %>"<%= valores.categoria === c ? ' selected' : '' %>><%= c %></option>
+        <% }) %>
+      </select>
+      <% if (errores.categoria) { %><span class="error"><%= errores.categoria %></span><% } %>
+    </label>
+
+    <label>Enlace del juego <small>Debe estar publicado en GitHub Pages.</small>
+      <input type="url" name="url" required pattern="https://[^/]+\.github\.io/.*"
+             placeholder="https://usuario.github.io/juego/" value="<%= valores.url || '' %>">
+      <% if (errores.url) { %><span class="error"><%= errores.url %></span><% } %>
+    </label>
+
+    <label>Portada <small>Ruta como /img/portada.svg o un enlace https.</small>
+      <input name="portada" maxlength="300" value="<%= valores.portada || '' %>">
+      <% if (errores.portada) { %><span class="error"><%= errores.portada %></span><% } %>
+    </label>
+    <% if (valores.portada) { %><div class="vista-portada"><img src="<%= valores.portada %>" alt="Vista previa de la portada"></div><% } %>
+
+    <div class="en-linea">
+      <button type="submit">Guardar juego</button>
+      <a href="/admin/juegos">Cancelar</a>
+    </div>
+  </form>
+</section>
+<%- include('../partials/footer') %>

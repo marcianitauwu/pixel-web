@@ -43,3 +43,26 @@ describe('control de acceso', () => {
   });
 });
 
+describe('pantallas de jugar', () => {
+  const { requireJugador } = require('../src/middlewares/auth');
+
+  test('el administrador es enviado a su panel en lugar del catálogo', () => {
+    const res = crearRes();
+    const next = jest.fn();
+    requireJugador({ session: { usuario: { id: 1, rol: 'admin' } }, originalUrl: '/catalogo' }, res, next);
+    expect(res.location).toBe('/admin/juegos');
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  test('el administrador no registra partidas', () => {
+    const res = crearRes();
+    requireJugador({ session: { usuario: { id: 1, rol: 'admin' } }, originalUrl: '/api/juegos/1/partida' }, res, jest.fn());
+    expect(res.statusCode).toBe(403);
+  });
+
+  test('un jugador entra al catálogo', () => {
+    const next = jest.fn();
+    requireJugador({ session: { usuario: { id: 2, rol: 'usuario' } }, originalUrl: '/catalogo' }, crearRes(), next);
+    expect(next).toHaveBeenCalled();
+  });
+});
