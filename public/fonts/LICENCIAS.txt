@@ -1,0 +1,2 @@
+Pixelify Sans y Atkinson Hyperlegible se distribuyen bajo la SIL Open Font License 1.1.
+Fuente: paquetes @fontsource/pixelify-sans y @fontsource/atkinson-hyperlegible.

@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Usuarios. rol: "admin" (CRUD de juegos y auditoría) | "usuario" (catálogo, reseñas, chat)
+model Usuario {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  email        String   @unique
+  passwordHash String
+  rol          String   @default("usuario")
+  creadoEn     DateTime @default(now())
+
+  mensajes Mensaje[]
+  resenas  Resena[]
+  partidas Partida[]
+  tokens   TokenRecuperacion[]
+  logs     LogAccion[]
+}
+
+// Token de recuperación: se guarda el hash SHA-256, nunca el token en claro.
+model TokenRecuperacion {
+  id        Int      @id @default(autoincrement())
+  hash      String   @unique
+  usuarioId Int
+  expira    DateTime
+  usado     Boolean  @default(false)
+  creadoEn  DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+}
+
+// Entidad principal del negocio: juego publicado en GitHub Pages.
+model Juego {
+  id               Int      @id @default(autoincrement())
+  titulo           String
+  descripcion      String
+  categoria        String
+  url              String
+  portada          String   @default("/img/placeholder.svg")
+  fechaPublicacion DateTime @default(now())
+
+  resenas  Resena[]
+  partidas Partida[]
+
+  @@index([titulo])
+  @@index([categoria])
+}
+
+// Reseña: un usuario solo puede reseñar un juego una vez (restricción única).
+model Resena {
+  id           Int      @id @default(autoincrement())
+  calificacion Int
+  comentario   String
+  creadoEn     DateTime @default(now())
+  usuarioId    Int
+  juegoId      Int
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  juego        Juego    @relation(fields: [juegoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, juegoId])
+  @@index([juegoId])
+}
+
+// Partida: se registra cada vez que un usuario elige un juego para jugar.
+model Partida {
+  id        Int      @id @default(autoincrement())
+  juegoId   Int
+  usuarioId Int?
+  creadoEn  DateTime @default(now())
+  juego     Juego    @relation(fields: [juegoId], references: [id], onDelete: Cascade)
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+
+  @@index([juegoId])
+}
+
+// Mensajes del chat. Por ahora solo existe la sala "general".
+model Mensaje {
+  id        Int      @id @default(autoincrement())
+  texto     String
+  sala      String   @default("general")
+  usuarioId Int
+  creadoEn  DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([sala, creadoEn])
+}
+
+// Auditoría: quién hizo qué, cuándo y desde qué IP. Nunca guarda contraseñas ni tokens.
+model LogAccion {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int?
+  accion    String
+  entidad   String
+  entidadId Int?
+  detalle   String?
+  ip        String?
+  creadoEn  DateTime @default(now())
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+
+  @@index([creadoEn])
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="<%= locals.csrfToken || '' %>">
+  <meta name="theme-color" content="#17142e">
+  <title><%= locals.titulo || 'Pixel Web' %> | Pixel Web</title>
+  <link rel="preload" href="/fonts/pixelify-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="barra">
+    <a class="marca" href="/"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><path d="M3 4h10v1h1v1h1v5h-1v1h-3v-1h-1v-1H6v1H5v1H2v-1H1V6h1V5h1zm1 3v1H3v1h1v1h1V9h1V8H5V7zm6 0v1h1V7zm2 1v1h1V8zm-2 1v1h1V9z"/></svg> Pixel Web</a>
+    <% if (locals.usuario) { %>
+      <div class="sesion">
+        <span class="sesion-nombre"><%= usuario.nombre %><% if (usuario.rol === 'admin') { %> <span class="insignia-admin">Admin</span><% } %></span>
+        <form method="post" action="/logout">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="secundario chico">Salir</button>
+        </form>
+      </div>
+    <% } %>
+  </header>
+  <main id="contenido">

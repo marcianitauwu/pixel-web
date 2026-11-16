@@ -1,0 +1,26 @@
+{
+  "name": "pixel-web",
+  "version": "1.0.0-b1.v1",
+  "private": true,
+  "description": "Catálogo de juegos con chat en vivo, reseñas, auditoría y panel de administración (monolito MVC)",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:push": "prisma db push",
+    "seed": "node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "prisma": "5.22.0"
+  }
+}
