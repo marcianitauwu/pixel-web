@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<section class="auth">
+  <%- include('partials/auth-panel', { panelTitulo: 'Únete a Pixel Web', panelTexto: 'Con tu cuenta puedes jugar, dejar reseñas y hablar con la comunidad.' }) %>
+  <div class="auth-form">
+    <h1>Crear cuenta</h1>
+    <p class="subtitulo">Solo necesitas un nombre, tu correo y una clave.</p>
+    <form method="post" action="/registro" class="formulario" data-validar>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Nombre
+        <input name="nombre" required minlength="3" maxlength="60" autocomplete="name" value="<%= datos.nombre || '' %>">
+        <% if (errores.nombre) { %><span class="error"><%= errores.nombre %></span><% } %>
+      </label>
+      <label>Correo
+        <input type="email" name="email" required maxlength="120" autocomplete="email" value="<%= datos.email || '' %>">
+        <% if (errores.email) { %><span class="error"><%= errores.email %></span><% } %>
+      </label>
+      <label>Clave <small>De 8 a 72 caracteres, con letras y números.</small>
+        <input type="password" name="password" data-clave required minlength="8" maxlength="72" autocomplete="new-password">
+        <% if (errores.password) { %><span class="error"><%= errores.password %></span><% } %>
+      </label>
+      <button type="submit">Crear cuenta</button>
+    </form>
+    <p class="enlaces-auth"><a href="/login">Ya tengo cuenta</a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

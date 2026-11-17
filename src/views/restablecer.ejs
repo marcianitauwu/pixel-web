@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<section class="auth">
+  <%- include('partials/auth-panel', { panelTitulo: 'Clave nueva', panelTexto: 'Usa una clave que no tengas en otros sitios.' }) %>
+  <div class="auth-form">
+    <h1>Crear clave nueva</h1>
+    <p class="subtitulo">De 8 a 72 caracteres, con letras y números.</p>
+    <% if (locals.error) { %><p class="error" role="alert"><%= error %></p><% } %>
+    <form method="post" action="/restablecer/<%= token %>" class="formulario" data-validar>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Clave nueva
+        <input type="password" name="password" data-clave required minlength="8" maxlength="72" autocomplete="new-password">
+      </label>
+      <button type="submit">Guardar clave</button>
+    </form>
+  </div>
+</section>
+<%- include('partials/footer') %>
