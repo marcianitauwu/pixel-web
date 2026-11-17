@@ -4,6 +4,7 @@ const { requireLogin, requireAdmin, requireJugador } = require('../middlewares/a
 const auth = require('../controllers/authController');
 const juegos = require('../controllers/juegosController');
 const admin = require('../controllers/adminController');
+const comunidad = require('../controllers/comunidadController');
 
 const router = express.Router();
 
@@ -33,10 +34,12 @@ router.post('/restablecer/:token', portadasAcceso, auth.restablecer);
 router.get(['/', '/catalogo'], requireJugador, juegos.catalogo);
 router.get('/juegos/:id', requireJugador, juegos.detalle);
 router.post('/juegos/:id/resenas', requireJugador, juegos.resenar);
+router.get('/comunidad', requireLogin, comunidad.pagina);
 
 // API JSON
 router.get('/api/juegos', requireLogin, juegos.apiListar);
 router.post('/api/juegos/:id/partida', requireJugador, juegos.registrarPartida);
+router.get('/api/mensajes', requireLogin, comunidad.historial);
 
 // Panel de administración (solo rol admin)
 router.get('/admin/juegos', requireAdmin, admin.listar);
