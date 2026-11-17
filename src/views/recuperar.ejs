@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<section class="auth">
+  <%- include('partials/auth-panel', { panelTitulo: 'Recupera tu cuenta', panelTexto: 'Te enviamos un enlace para crear una clave nueva. Vale por 1 hora.' }) %>
+  <div class="auth-form">
+    <% if (enviado) { %>
+      <h1>Revisa tu correo</h1>
+      <p class="exito" role="status">Si el correo está registrado, te llegará un enlace para crear una clave nueva.</p>
+      <p class="nota">En desarrollo, el enlace aparece en la consola del servidor.</p>
+      <p class="enlaces-auth"><a href="/login">Volver a iniciar sesión</a></p>
+    <% } else { %>
+      <h1>Olvidé mi clave</h1>
+      <p class="subtitulo">Escribe el correo de tu cuenta.</p>
+      <form method="post" action="/recuperar" class="formulario">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <label>Correo
+          <input type="email" name="email" required maxlength="120" autocomplete="email">
+        </label>
+        <button type="submit">Enviar enlace</button>
+      </form>
+      <p class="enlaces-auth"><a href="/login">Volver a iniciar sesión</a></p>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/footer') %>

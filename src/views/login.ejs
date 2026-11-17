@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<section class="auth">
+  <%- include('partials/auth-panel', { panelTitulo: 'Juega gratis', panelTexto: 'Juegos hechos en Quito, listos para jugar en tu navegador.' }) %>
+  <div class="auth-form">
+    <h1>Iniciar sesión</h1>
+    <p class="subtitulo">Entra con tu correo y tu clave.</p>
+    <% if (locals.info) { %><p class="exito" role="status"><%= info %></p><% } %>
+    <% if (locals.error) { %><p class="error" role="alert"><%= error %></p><% } %>
+    <form method="post" action="/login" class="formulario">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Correo
+        <input type="email" name="email" required maxlength="120" autocomplete="email" value="<%= locals.datos ? datos.email || '' : '' %>">
+      </label>
+      <label>Clave
+        <input type="password" name="password" required maxlength="72" autocomplete="current-password">
+      </label>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <p class="enlaces-auth"><a href="/registro">Crear una cuenta</a><a href="/recuperar">Olvidé mi clave</a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

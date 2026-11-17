@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+const { middleware: sesion } = require('./config/sesion');
+const { protegerCsrf } = require('./middlewares/csrf');
 const rutas = require('./routes');
 
 const app = express();
@@ -11,6 +13,12 @@ app.disable('x-powered-by');
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
+app.use(sesion);
+app.use(protegerCsrf);
+app.use((req, res, next) => {
+  res.locals.usuario = req.session.usuario || null;
+  next();
+});
 
 app.use(rutas);
 

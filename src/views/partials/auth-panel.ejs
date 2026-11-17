@@ -1,0 +1,7 @@
+<aside class="auth-panel" aria-hidden="true">
+  <div class="auth-mosaico">
+    <% (locals.portadas || []).slice(0, 5).forEach(src => { %><img src="<%= src %>" alt=""><% }) %>
+  </div>
+  <h2><%= panelTitulo %></h2>
+  <p><%= panelTexto %></p>
+</aside>
