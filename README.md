@@ -9,6 +9,7 @@ Esta es una versión intermedia. El README completo llega en la versión 5.
 - **v1, base de datos y estructura:** esquema de Prisma con todos los modelos, seed con el administrador y los juegos de ejemplo, servidor Express con vistas EJS, estilos, fuentes y portadas.
 - **v2, autenticación:** registro, inicio de sesión, cierre de sesión, recuperación de clave con token de un solo uso y envío de correo, roles, protección CSRF y auditoría de accesos.
 - **v3, catálogo y administración:** catálogo con búsqueda, filtros y paginación, página de juego, reseñas, CRUD de juegos para el admin y pantalla de auditoría.
+- **v4, chat en tiempo real:** comunidad con WebSocket autenticado, historial, usuarios conectados y aviso de juego nuevo.
 
 ## Pasos para ejecutar
 

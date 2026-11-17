@@ -1,6 +1,7 @@
 const prisma = require('../config/prisma');
 const { CATEGORIAS, texto, aEntero, paginaDe, validarJuego } = require('../services/validacion');
 const { registrarAccion } = require('../services/auditoria');
+const { difundir } = require('../sockets/chat');
 
 const POR_PAGINA = 10;
 const LOGS_POR_PAGINA = 25;
@@ -53,6 +54,8 @@ exports.crear = async (req, res) => {
   const juego = await prisma.juego.create({ data: datos });
   await registrarAccion({ usuarioId: req.session.usuario.id, accion: 'crear', entidad: 'Juego', entidadId: juego.id, detalle: juego.titulo, ip: req.ip });
 
+  // Notificación en tiempo real a los usuarios conectados al chat.
+  difundir({ tipo: 'juego_nuevo', id: juego.id, titulo: juego.titulo });
 
   res.redirect(`/admin/juegos?ok=${encodeURIComponent('Juego creado')}`);
 };

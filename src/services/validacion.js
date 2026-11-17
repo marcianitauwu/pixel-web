@@ -97,6 +97,14 @@ function validarJuego(body = {}) {
   return { errores, datos };
 }
 
+// Quita caracteres de control y valida la longitud del mensaje del chat.
+function validarMensaje(valor) {
+  if (typeof valor !== 'string') return { valido: false, error: 'El mensaje es obligatorio.' };
+  const limpio = valor.replace(/[\u0000-\u001F\u007F]/g, '').trim();
+  if (!limpio) return { valido: false, error: 'El mensaje está vacío.' };
+  if (limpio.length > 500) return { valido: false, error: 'El mensaje no puede superar 500 caracteres.' };
+  return { valido: true, texto: limpio };
+}
 
 function validarResena(body = {}) {
   const errores = {};
@@ -122,5 +130,6 @@ module.exports = {
   validarRegistro,
   validarLogin,
   validarJuego,
+  validarMensaje,
   validarResena,
 };

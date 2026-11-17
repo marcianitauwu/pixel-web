@@ -47,6 +47,14 @@ describe('validación del CRUD de juegos', () => {
 });
 
 describe('validación de mensajes y reseñas', () => {
+  test('elimina caracteres de control y rechaza mensajes vacíos', () => {
+    expect(v.validarMensaje('hola\u0007 mundo').texto).toBe('hola mundo');
+    expect(v.validarMensaje('   ').valido).toBe(false);
+  });
+
+  test('rechaza mensajes de más de 500 caracteres', () => {
+    expect(v.validarMensaje('a'.repeat(501)).valido).toBe(false);
+  });
 
   test('la calificación de una reseña debe estar entre 1 y 5', () => {
     expect(v.validarResena({ calificacion: '6', comentario: 'Muy bueno' }).errores.calificacion).toBeDefined();
