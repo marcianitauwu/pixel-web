@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+<div class="encabezado-pagina">
+  <div>
+    <h1>Auditoría</h1>
+    <p class="nota">Quién hizo qué y cuándo: accesos, cambios en juegos, reseñas y recuperaciones de clave.</p>
+  </div>
+</div>
+
+<div class="tabla">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Fecha</th><th scope="col">Usuario</th><th scope="col">Acción</th>
+        <th scope="col">Entidad</th><th scope="col">Detalle</th><th scope="col">IP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% logs.forEach(l => { %>
+        <tr>
+          <td><%= l.creadoEn.toLocaleString('es-EC', { dateStyle: 'short', timeStyle: 'short' }) %></td>
+          <td><%= l.usuario ? l.usuario.nombre : 'Sin usuario' %></td>
+          <td><span class="etiqueta-accion <%= l.accion %>"><%= l.accion.replace('_', ' ') %></span></td>
+          <td><%= l.entidad %><%= l.entidadId != null ? ` #${l.entidadId}` : '' %></td>
+          <td><%= l.detalle || '' %></td>
+          <td><%= l.ip || '' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<% if (totalPaginas > 1) { %>
+  <nav class="paginacion" aria-label="Paginación">
+    <% if (pagina > 1) { %><a href="/admin/auditoria?pagina=<%= pagina - 1 %>">Anterior</a><% } %>
+    <span>Página <%= pagina %> de <%= totalPaginas %></span>
+    <% if (pagina < totalPaginas) { %><a href="/admin/auditoria?pagina=<%= pagina + 1 %>">Siguiente</a><% } %>
+  </nav>
+<% } %>
+<%- include('../partials/footer') %>

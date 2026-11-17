@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+<section class="portada-catalogo">
+  <div>
+    <h1>Elige un juego</h1>
+    <p>Haz clic en cualquier juego y empieza a jugar.</p>
+  </div>
+  <form method="get" action="/catalogo" class="buscador" role="search">
+    <label class="sr-only" for="q">Buscar juegos</label>
+    <input id="q" type="search" name="q" maxlength="60" placeholder="Buscar juegos" value="<%= q %>">
+    <input type="hidden" name="categoria" value="<%= categoria %>">
+    <label class="sr-only" for="orden">Ordenar por</label>
+    <select id="orden" name="orden">
+      <option value="titulo"<%= orden !== 'populares' ? ' selected' : '' %>>A a Z</option>
+      <option value="populares"<%= orden === 'populares' ? ' selected' : '' %>>Más jugados</option>
+    </select>
+    <button type="submit">Buscar</button>
+  </form>
+</section>
+
+<nav class="chips" aria-label="Categorías">
+  <a href="/catalogo?orden=<%= orden %>" class="chip<%= !categoria ? ' activo' : '' %>"<%- !categoria ? ' aria-current="true"' : '' %>>Todos</a>
+  <% categorias.forEach(c => { %>
+    <a href="/catalogo?categoria=<%= encodeURIComponent(c) %>&amp;orden=<%= orden %>" class="chip<%= c === categoria ? ' activo' : '' %>"<%- c === categoria ? ' aria-current="true"' : '' %>><%= c %></a>
+  <% }) %>
+</nav>
+
+<% if (juegos.length === 0) { %>
+  <div class="vacio">
+    <h2>No encontramos juegos</h2>
+    <p>Prueba con otra palabra o revisa todas las categorías.</p>
+    <a class="boton" href="/catalogo">Ver todos los juegos</a>
+  </div>
+<% } else { %>
+  <ul class="galeria">
+    <% juegos.forEach(j => { %>
+      <li class="juego">
+        <div class="juego-imagen"><img src="<%= j.portada %>" alt="" width="640" height="360" loading="lazy"></div>
+        <div class="juego-cuerpo">
+          <h2 class="juego-titulo"><a href="/juegos/<%= j.id %>"><%= j.titulo %></a></h2>
+          <p class="juego-categoria"><%= j.categoria %></p>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+
+  <% if (totalPaginas > 1) { %>
+    <nav class="paginacion" aria-label="Paginación">
+      <% if (pagina > 1) { %><a href="/catalogo?<%= queryBase %>&amp;pagina=<%= pagina - 1 %>">Anterior</a><% } %>
+      <span>Página <%= pagina %> de <%= totalPaginas %></span>
+      <% if (pagina < totalPaginas) { %><a href="/catalogo?<%= queryBase %>&amp;pagina=<%= pagina + 1 %>">Siguiente</a><% } %>
+    </nav>
+  <% } %>
+<% } %>
+<%- include('partials/footer') %>

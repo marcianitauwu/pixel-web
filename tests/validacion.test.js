@@ -1,5 +1,18 @@
 const v = require('../src/services/validacion');
 
+describe('validación de URLs de juegos', () => {
+  test('acepta un juego publicado en GitHub Pages', () => {
+    expect(v.validarUrlJuego('https://2026b-sof-jueg-gr1.github.io/salazar-dominguez/')).toBeNull();
+  });
+
+  test('rechaza URLs que no son de GitHub Pages', () => {
+    expect(v.validarUrlJuego('https://ejemplo.com/juego')).toMatch(/GitHub Pages/);
+  });
+
+  test('rechaza conexiones sin cifrar', () => {
+    expect(v.validarUrlJuego('http://usuario.github.io/juego')).toMatch(/https/);
+  });
+});
 
 describe('validación de registro y login', () => {
   test('rechaza una clave sin números', () => {
@@ -19,4 +32,24 @@ describe('validación de registro y login', () => {
   });
 });
 
+describe('validación del CRUD de juegos', () => {
+  test('rechaza categoría inexistente y título demasiado corto', () => {
+    const { errores } = v.validarJuego({
+      titulo: 'ab',
+      descripcion: 'Una descripción suficiente',
+      categoria: 'Inventada',
+      url: 'https://usuario.github.io/juego/',
+    });
+    expect(errores.titulo).toBeDefined();
+    expect(errores.categoria).toBeDefined();
+    expect(errores.url).toBeUndefined();
+  });
+});
 
+describe('validación de mensajes y reseñas', () => {
+
+  test('la calificación de una reseña debe estar entre 1 y 5', () => {
+    expect(v.validarResena({ calificacion: '6', comentario: 'Muy bueno' }).errores.calificacion).toBeDefined();
+    expect(v.validarResena({ calificacion: '4', comentario: 'Muy bueno' }).errores).toEqual({});
+  });
+});

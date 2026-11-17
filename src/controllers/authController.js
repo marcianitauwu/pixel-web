@@ -43,7 +43,7 @@ exports.iniciar = async (req, res) => {
 
   await iniciarSesion(req, usuario);
   await registrarAccion({ usuarioId: usuario.id, accion: 'login', entidad: 'Usuario', entidadId: usuario.id, ip: req.ip });
-  res.redirect('/');
+  res.redirect(usuario.rol === 'admin' ? '/admin/juegos' : '/');
 };
 
 exports.mostrarRegistro = (req, res) =>

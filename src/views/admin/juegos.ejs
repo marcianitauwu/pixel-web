@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+<div class="encabezado-pagina">
+  <div>
+    <h1>Administrar juegos</h1>
+    <p class="nota"><%= total %> juego<%= total === 1 ? '' : 's' %> en el catálogo.</p>
+  </div>
+  <a class="boton" href="/admin/juegos/nuevo">Agregar juego</a>
+</div>
+<% if (locals.mensaje) { %><p class="exito" role="status"><%= mensaje %></p><% } %>
+
+<form method="get" action="/admin/juegos" class="filtros" role="search">
+  <label class="sr-only" for="q">Buscar por título</label>
+  <input id="q" type="search" name="q" maxlength="60" placeholder="Buscar por título" value="<%= q %>">
+  <button type="submit" class="secundario">Buscar</button>
+</form>
+
+<div class="tabla">
+  <table>
+    <thead>
+      <tr><th scope="col">Portada</th><th scope="col">ID</th><th scope="col">Título</th><th scope="col">Categoría</th><th scope="col"><span class="sr-only">Acciones</span></th></tr>
+    </thead>
+    <tbody>
+      <% juegos.forEach(j => { %>
+        <tr>
+          <td class="miniatura"><img src="<%= j.portada %>" alt=""></td>
+          <td><%= j.id %></td>
+          <td><a href="/admin/juegos/<%= j.id %>/editar"><%= j.titulo %></a></td>
+          <td><%= j.categoria %></td>
+          <td class="acciones">
+            <div class="en-linea">
+              <a class="boton secundario chico" href="/admin/juegos/<%= j.id %>/editar">Editar</a>
+              <form method="post" action="/admin/juegos/<%= j.id %>/eliminar" class="en-linea"
+                    data-confirm="¿Eliminar «<%= j.titulo %>»? Esta acción no se puede deshacer.">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="peligro chico">Eliminar</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<% if (totalPaginas > 1) { %>
+  <nav class="paginacion" aria-label="Paginación">
+    <% if (pagina > 1) { %><a href="/admin/juegos?q=<%= encodeURIComponent(q) %>&amp;pagina=<%= pagina - 1 %>">Anterior</a><% } %>
+    <span>Página <%= pagina %> de <%= totalPaginas %></span>
+    <% if (pagina < totalPaginas) { %><a href="/admin/juegos?q=<%= encodeURIComponent(q) %>&amp;pagina=<%= pagina + 1 %>">Siguiente</a><% } %>
+  </nav>
+<% } %>
+<%- include('../partials/footer') %>

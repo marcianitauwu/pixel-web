@@ -1,8 +1,9 @@
 const express = require('express');
 const prisma = require('../config/prisma');
-const { requireLogin } = require('../middlewares/auth');
+const { requireLogin, requireAdmin, requireJugador } = require('../middlewares/auth');
 const auth = require('../controllers/authController');
-const inicio = require('../controllers/inicioController');
+const juegos = require('../controllers/juegosController');
+const admin = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -28,7 +29,22 @@ router.post('/recuperar', portadasAcceso, auth.solicitarRecuperar);
 router.get('/restablecer/:token', portadasAcceso, auth.mostrarRestablecer);
 router.post('/restablecer/:token', portadasAcceso, auth.restablecer);
 
-// Inicio provisional, ahora con sesión iniciada.
-router.get('/', requireLogin, inicio.inicio);
+// Pantallas con sesión iniciada
+router.get(['/', '/catalogo'], requireJugador, juegos.catalogo);
+router.get('/juegos/:id', requireJugador, juegos.detalle);
+router.post('/juegos/:id/resenas', requireJugador, juegos.resenar);
+
+// API JSON
+router.get('/api/juegos', requireLogin, juegos.apiListar);
+router.post('/api/juegos/:id/partida', requireJugador, juegos.registrarPartida);
+
+// Panel de administración (solo rol admin)
+router.get('/admin/juegos', requireAdmin, admin.listar);
+router.get('/admin/juegos/nuevo', requireAdmin, admin.formNuevo);
+router.post('/admin/juegos', requireAdmin, admin.crear);
+router.get('/admin/juegos/:id/editar', requireAdmin, admin.formEditar);
+router.post('/admin/juegos/:id', requireAdmin, admin.actualizar);
+router.post('/admin/juegos/:id/eliminar', requireAdmin, admin.eliminar);
+router.get('/admin/auditoria', requireAdmin, admin.auditoria);
 
 module.exports = router;
