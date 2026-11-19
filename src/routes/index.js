@@ -1,11 +1,12 @@
 const express = require('express');
-const prisma = require('../config/prisma');
 const { requireLogin, requireAdmin, requireJugador } = require('../middlewares/auth');
 const { limiteLogin, limiteRecuperacion } = require('../middlewares/limites');
 const auth = require('../controllers/authController');
 const juegos = require('../controllers/juegosController');
 const admin = require('../controllers/adminController');
 const comunidad = require('../controllers/comunidadController');
+
+const prisma = require('../config/prisma');
 
 const router = express.Router();
 
