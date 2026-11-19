@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const helmet = require('helmet');
 const { middleware: sesion } = require('./config/sesion');
 const { protegerCsrf } = require('./middlewares/csrf');
 const rutas = require('./routes');
@@ -9,6 +10,23 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.disable('x-powered-by');
+
+// Cabeceras de seguridad. frame-src permite solo los juegos alojados en GitHub Pages.
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        frameSrc: ["'self'", 'https://*.github.io'],
+        connectSrc: ["'self'", 'ws:', 'wss:'],
+        objectSrc: ["'none'"],
+      },
+    },
+  }),
+);
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));

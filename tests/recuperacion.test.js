@@ -32,6 +32,12 @@ jest.mock('../src/config/prisma', () => ({
   juego: { findMany: async () => [] },
 }));
 
+// El límite de intentos se prueba aparte (tests/limites.test.js). Aquí se desactiva
+// porque el flujo hace más de 5 solicitudes seguidas.
+jest.mock('../src/middlewares/limites', () => ({
+  limiteLogin: (req, res, next) => next(),
+  limiteRecuperacion: (req, res, next) => next(),
+}));
 
 const app = require('../src/app');
 
