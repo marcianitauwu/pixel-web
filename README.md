@@ -195,26 +195,20 @@ El esquema completo está en [`prisma/schema.prisma`](prisma/schema.prisma).
 
 ## Integrantes y roles
 
-| Integrante | Rol |
-|---|---|
-| Gregory Leandro Salazar Domínguez | Por asignar |
-| Stalin René Anrango Burga | Por asignar |
-| Paúl Andrés Dávila Navarrete | Por asignar |
-| Isabella Sarahy Hernández Quintana | Por asignar |
-| Samira Fernanda Arízaga Guallpa | Por asignar |
-
-Roles del equipo:
-
-- **Base de datos y modelos:** esquema de Prisma, seed y documentación del modelo de datos.
-- **Autenticación:** registro, inicio de sesión, recuperación de clave, sesiones y roles.
-- **Catálogo y administración:** catálogo, página de juego, reseñas, CRUD del panel y auditoría.
-- **Chat en tiempo real:** servidor WebSocket, historial, usuarios conectados y notificaciones.
-- **Calidad y documentación:** pruebas automatizadas, medición de rendimiento, README y presentación.
+| Integrante | Rol | Versión | Responsabilidad |
+|---|---|---|---|
+| Samira Fernanda Arízaga Guallpa | Arquitecta de datos | v1 (`main`) | Esquema de Prisma, seed y documentación del modelo de datos. |
+| Paúl Andrés Dávila Navarrete | Ingeniero de seguridad y acceso | v2 (`Feature_Autenticacion`) | Registro, inicio de sesión, recuperación de clave, sesiones y roles. |
+| Isabella Sarahy Hernández Quintana | Desarrolladora full stack | v3 (`Feature_Catalogo`) | Catálogo, página de juego, reseñas, CRUD del panel de administración y auditoría. |
+| Gregory Leandro Salazar Domínguez | Ingeniero de sistemas en tiempo real | v4 (`Feature_Chat`) | Servidor WebSocket, historial del chat, usuarios conectados y notificaciones. |
+| Alison Betancourt | Líder de calidad y DevSecOps | v5 (`Feature_Seguridad`) | Helmet, límite de intentos, pruebas automatizadas, medición de rendimiento y README. |
 
 ## Uso de IA
 
 | Herramienta | Propósito |
 |---|---|
-| Claude (Anthropic) | Planificar la arquitectura según la guía del proyecto. Generar la base del código: modelos, controladores, rutas, vistas, servidor WebSocket, validaciones y pruebas. Diseñar los estilos y las portadas en pixel art de los juegos. Redactar las descripciones de los juegos y este README, incluidos los diagramas. |
+| Claude (Anthropic) | Generar la base del código: modelos, controladores, rutas, vistas, servidor WebSocket, validaciones y pruebas. Diseñar los estilos y las portadas en pixel art de los juegos. Redactar borradores de las descripciones de los juegos, de este README con sus diagramas y de la presentación. |
+
+**Aporte del equipo:** la idea de la pyme y los cinco juegos, hechos en Desarrollo de Juegos Serios. Las decisiones del sistema: arquitectura MVC, WebSocket nativo, roles, panel de administración, auditoría y reseñas. La revisión, las pruebas y la integración por ramas.
 
 El grupo revisó, probó y entiende el código y los textos generados, y puede explicarlos y modificarlos durante la defensa.
