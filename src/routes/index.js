@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../config/prisma');
 const { requireLogin, requireAdmin, requireJugador } = require('../middlewares/auth');
+const { limiteLogin, limiteRecuperacion } = require('../middlewares/limites');
 const auth = require('../controllers/authController');
 const juegos = require('../controllers/juegosController');
 const admin = require('../controllers/adminController');
@@ -21,12 +22,12 @@ async function portadasAcceso(req, res, next) {
 
 // Acceso y cuenta
 router.get('/login', portadasAcceso, auth.mostrarLogin);
-router.post('/login', portadasAcceso, auth.iniciar);
+router.post('/login', limiteLogin, portadasAcceso, auth.iniciar);
 router.get('/registro', portadasAcceso, auth.mostrarRegistro);
 router.post('/registro', portadasAcceso, auth.registrar);
 router.post('/logout', auth.cerrar);
 router.get('/recuperar', portadasAcceso, auth.mostrarRecuperar);
-router.post('/recuperar', portadasAcceso, auth.solicitarRecuperar);
+router.post('/recuperar', limiteRecuperacion, portadasAcceso, auth.solicitarRecuperar);
 router.get('/restablecer/:token', portadasAcceso, auth.mostrarRestablecer);
 router.post('/restablecer/:token', portadasAcceso, auth.restablecer);
 
