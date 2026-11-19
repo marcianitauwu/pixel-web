@@ -1,6 +1,6 @@
 {
   "name": "pixel-web",
-  "version": "1.0.0-b1",
+  "version": "1.0.0-b1.v5",
   "private": true,
   "description": "Catálogo de juegos con chat en vivo, reseñas, auditoría y panel de administración (monolito MVC)",
   "main": "src/server.js",
